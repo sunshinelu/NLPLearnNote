@@ -2,6 +2,8 @@
 
 demo来源：
 
+MeteorYee/LSTM-CNN-CWS
+<https://github.com/MeteorYee/LSTM-CNN-CWS>
 
 
 cd /Users/sunlu/Workspaces/PyCharm/Github/NLPLearnNote/LSTM/SegWords/BI-LSTM/Demo2
@@ -12,7 +14,7 @@ python 1_preprocess.py --rootDir /Users/sunlu/Documents/天枢大数据团队/�
 
 2. word cont
 
-python 2_word_count Corpora/people2014All.txt results/pre_vocab.txt
+python 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt
 
 
 3. unk替换
@@ -39,6 +41,30 @@ python 6_2_lstm_crf_train.py --train_data_path Corpora/train.txt --test_data_pat
 
 cd /home/sunlu/Workspace/bi-lstm_cnn_crf
 
+1. 数据预处理：
+
 python 1_preprocess.py --rootDir /home/sunlu/Data/people2014/2014 --corpusAll Corpora/people2014All.txt --resultFile results/pre_chars_for_w2v.txt
 
+输出：
+got 103 tags
+
+
 2. word cont
+
+python 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt
+
+
+nohup python -u 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt > 2_word_count.log 2>&1 &
+［失败］
+
+
+vi 2_word_count.sh 
+
+#! /bin/sh
+
+python 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt 
+
+
+chmod +x 2_word_count.sh
+nohup ./2_word_count.sh > 2_word_count.log 2>&1 &
+[1] 22573

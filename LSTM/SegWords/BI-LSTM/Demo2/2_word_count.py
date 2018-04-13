@@ -3,6 +3,11 @@ import sys
 import pandas as pd
 import numpy as np
 
+import datetime
+
+starttime = datetime.datetime.now()
+print("开始时间：" + str(starttime))
+
 # corpusAll = "/Users/sunlu/Workspaces/PyCharm/Github/NLPLearnNote/LSTM/SegWords/BI-LSTM/Demo2/Corpora/people2014All.txt"
 corpusAll = sys.argv[1]
 
@@ -27,3 +32,8 @@ df3 = df3[['col3','col2']]
 outputFile = sys.argv[2]
 df3.to_csv(outputFile,
            encoding = 'utf-8', index=False,header=False)
+
+endtime = datetime.datetime.now()
+print("结束时间：" + str(endtime))
+
+print("word count运行时间：" + str((endtime - starttime).days))
