@@ -19,9 +19,11 @@ spark = SparkSession \
 
 sc = spark.sparkContext
 
-# inp1 = "/home/sunlu/Workspace/bi-lstm_cnn_crf/Corpora/people2014All.txt"
-inp1 = "/Users/sunlu/Workspaces/PyCharm/Github/NLPLearnNote/LSTM/SegWords/BI-LSTM/Demo2/results/pre_chars_for_w2v.txt"
-otp = "/Users/sunlu/Workspaces/PyCharm/Github/NLPLearnNote/LSTM/SegWords/BI-LSTM/Demo2/results/pre_vocab"
+# inp1 = "/Users/sunlu/Workspaces/PyCharm/Github/NLPLearnNote/LSTM/SegWords/BI-LSTM/Demo2/results/pre_chars_for_w2v.txt"
+# otp = "/Users/sunlu/Workspaces/PyCharm/Github/NLPLearnNote/LSTM/SegWords/BI-LSTM/Demo2/results/pre_vocab.txt"
+
+inp1 = sys.argv[1]
+otp = sys.argv[2]
 
 text_rdd = sc.textFile(inp1).map(lambda x: (x, ))
 def splitChar(x):
@@ -35,12 +37,12 @@ df2 = df1.select("txt", explode(split(col("txt"), "\s+")).alias("word"))
 # df2.show(5)
 
 # word_count = df2.groupBy('word').count().sort(desc("count"))
-word_count = df2.groupBy('word').count().orderBy(desc("count"))
+word_count = df2.groupBy('word').count().orderBy(desc("count")).filter(col("count") >= 3)
 # word_count.printSchema()
 # word_count.show(5)
 
 # word_count.coalesce(1).write.mode('overwrite') \
 #     .csv(otp ,sep=' ')
 
-word_count.coalesce(1).toPandas().to_csv(otp + ".csv",sep=' ',
+word_count.coalesce(1).toPandas().to_csv(otp,sep=' ',
                              index=False,header=False)

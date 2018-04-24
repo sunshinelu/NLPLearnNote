@@ -6,6 +6,10 @@ import pyspark
 import pyspark.sql
 from pyspark.sql import SparkSession
 
+"""
+注：最终未使用该方法，结果保存出来为unicode编码不是中文字符串，因为saveAsTextFile方法默认将结果保存成unicode。
+"""
+
 master= "local"
 spark = SparkSession.builder\
     .appName("word_count")\

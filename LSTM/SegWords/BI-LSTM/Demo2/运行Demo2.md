@@ -14,7 +14,7 @@ python 1_preprocess.py --rootDir /Users/sunlu/Documents/天枢大数据团队/�
 
 2. word cont
 
-python 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt
+python 2_word_count_df.py results/pre_chars_for_w2v.txt results/pre_vocab.txt
 
 
 3. unk替换
@@ -24,6 +24,8 @@ python 3_replace_unk.py results/pre_vocab.txt results/pre_chars_for_w2v.txt resu
 4. build word2vec model
 
 运行 4_word2vec.py
+ 
+python 4_word2vec.py results/chars_for_w2v.txt results/char_vec.txt results/word2vec.model
 
 5. pre train
 
@@ -51,20 +53,28 @@ got 103 tags
 
 2. word cont
 
-python 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt
+python 2_word_count_df.py results/pre_chars_for_w2v.txt results/pre_vocab.txt 
+
+3. unk替换
+
+python 3_replace_unk.py results/pre_vocab.txt results/pre_chars_for_w2v.txt results/chars_for_w2v.txt
 
 
-nohup python -u 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt > 2_word_count.log 2>&1 &
-［失败］
+4. build word2vec model
+
+运行 4_word2vec.py
+ 
+python 4_word2vec.py results/chars_for_w2v.txt results/char_vec.txt results/word2vec.model
 
 
-vi 2_word_count.sh 
+5. pre train
 
-#! /bin/sh
+python 5_pre_train.py --corpusAll Corpora/people2014All.txt --vecpath results/char_vec.txt --train_file Corpora/train.txt --test_file Corpora/test.txt
 
-python 2_word_count.py Corpora/people2014All.txt results/pre_vocab.txt 
+输出：
+Generating finished, gave up 10708 bad lines
 
 
-chmod +x 2_word_count.sh
-nohup ./2_word_count.sh > 2_word_count.log 2>&1 &
-[1] 22573
+6. build bi-lstm model
+
+python 6_1_lstm_cnn_train.py --train_data_path Corpora/train.txt --test_data_path Corpora/test.txt --word2vec_path results/char_vec.txt
