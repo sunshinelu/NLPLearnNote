@@ -19,8 +19,10 @@ modelPath = sys.argv[3]
 
 
 # 训练skip-gram模型
-model = Word2Vec(LineSentence(inputFile), size=400, window=5, min_count=5,
-                 workers=multiprocessing.cpu_count())
+# model = Word2Vec(LineSentence(inputFile), size=50, window=5, min_count=3,
+#                  workers=multiprocessing.cpu_count())
+model = Word2Vec(LineSentence(inputFile), sg=1, size=50,  window=5,  min_count=3,
+                 negative=0, sample=1e-4, hs=1, workers=4)
 
 # 保存模型
 model.save(modelPath)
