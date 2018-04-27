@@ -1,4 +1,3 @@
-#!/usr/bin/python
 #-*-coding:utf-8-*-
 '''
 Created on 2018-04-26 16:38
@@ -6,6 +5,7 @@ Created on 2018-04-26 16:38
 '''
 
 from seqlib import *
+
 train_word_num = load(open('./data/train_word_num.pickle','rb'))
 train_label = load(open('./data/train_label.pickle','rb'))
 nb_class = len(np.unique(train_label)) #去除其中重复的元素,返回一个新的无元素重复的元组或者列表
