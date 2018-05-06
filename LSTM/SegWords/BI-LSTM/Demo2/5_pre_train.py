@@ -15,6 +15,7 @@ import argparse
 def main(corpusAll,
          vecpath,
          train_file,
+         train_file_raw,
          test_file,
          test_file_raw,
          test_file_gold,
@@ -40,10 +41,11 @@ def main(corpusAll,
     cnt = 0
 
     trop_ = open(train_file, 'w')
+    trrop_ = open(train_file_raw, 'w')
     ttop_ = open(test_file, 'w')
     ttrop_ = open(test_file_raw, 'w')
     ttgop_ = open(test_file_gold, 'w')
-    with trop_ as trop, ttop_ as ttop, ttrop_ as ttrop, ttgop_ as ttgop:
+    with trop_ as trop, trrop_ as trrop,ttop_ as ttop, ttrop_ as ttrop, ttgop_ as ttgop:
         for ind, line in enumerate(inp):
             line_pieces = []
             NE_free_line = snhd.NE_Removing(line)
@@ -66,8 +68,9 @@ def main(corpusAll,
                     ttop.write(piece)
                 cnt += 1
             else:
-                for piece in analyzed_pieces:
+                for piece_raw, piece in zip(line_pieces, analyzed_pieces):
                     trop.write(piece)
+                    trrop.write(snhd.CleanSentence(piece_raw, set([]), interval = u' '))
 
         print "Generating finished, gave up %d bad lines" % bad_lines
 
@@ -91,6 +94,11 @@ if __name__ == '__main__':
       type = str,
       default = "Corpora/train.txt",
       help = "training file will be generated here")
+    parser.add_argument(
+      "--train_file_raw",
+      type = str,
+      default = "Corpora/train_raw.txt",
+      help = "training row file will be generated here")
     parser.add_argument(
       "--test_file",
       type = str,
@@ -124,6 +132,6 @@ if __name__ == '__main__':
       help = "program chooses 1 test sentence for every <step> steps")
 
     args = parser.parse_args()
-    main(args.corpusAll, args.vecpath, args.train_file,
+    main(args.corpusAll, args.vecpath, args.train_file, args.train_file_raw,
         args.test_file, args.test_file_raw, args.test_file_gold,
         args.MAX_LEN, args.test_size, args.step)
